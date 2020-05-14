@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^get/', hello.get),
     url(r'^put/', hello.put),
+    url(r'^init/(?P<number>\w{0,50})/$', hello.initData),
+    url(r'^init/$', hello.initData),
 ]
