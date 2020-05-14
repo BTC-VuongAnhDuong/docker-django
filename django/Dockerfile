@@ -1,5 +1,4 @@
 FROM python:2.7
-ADD . /usr/src/app
 WORKDIR /usr/src/app
 EXPOSE 8080
 RUN /usr/local/bin/python -m pip install --upgrade pip
