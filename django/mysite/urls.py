@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^get/', hello.get),
     url(r'^put/', hello.put),
     url(r'^init/(?P<number>\w{0,50})/$', hello.initData),
+    url(r'^query/', hello.query),
     url(r'^init/$', hello.initData),
 ]

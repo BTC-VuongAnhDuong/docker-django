@@ -29,9 +29,29 @@ def put(request):
     all_data['message3'] = id_generator(100)
     all_data['message4'] = id_generator(100)
     mongo_result = mongo_collection.insert(all_data)
-
+    all_data['create_date'] = str(all_data['create_date'])
     return JsonResponse({"status": 200,
-                         "message": str(mongo_result)})
+                         "data": {
+                             "id" : str(mongo_result),
+                             "message" : all_data['message'],
+                             "message2" : all_data['message2'],
+                             "message3" : all_data['message3'],
+                             "message4" : all_data['message4'],
+                         }})
+
+def query(request):
+    message = request.GET.get('message')
+    mongo_client = MongoClient(configData)
+    mongo_db = mongo_client.database
+    mongo_collection = mongo_db.log
+    query = {"$regex" : ".*"+message+".*"}
+    result =  mongo_collection.find({ "$or": [{"message":query},{"message2":query},{"message3":query},{"message4":query}] }).limit(10)
+    import json
+    from bson.json_util import dumps
+    if result is None:
+        result = []
+    return JsonResponse({"status": 200,
+                         "data": json.loads(dumps(result))})
 
 #generate default data for testing that reach to 250MB for mongo data size
 def init(number):
@@ -46,6 +66,7 @@ def init(number):
         all_data['message3'] = id_generator(100)
         all_data['message4'] = id_generator(100)
         mongo_collection.insert(all_data)
+
     return True
 
 
